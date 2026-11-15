@@ -1,0 +1,8 @@
+*.apk
+*.ipk
+out/
+sdk/
+*.tar.zst
+*.tar.gz
+.DS_Store
+Thumbs.db

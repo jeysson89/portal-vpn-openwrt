@@ -1,0 +1,25 @@
+# Чёрный список: эти домены ВСЕГДА через прокси (даже если их зона в белом списке).
+# Один домен на строку. Строки с # — комментарии.
+
+# --- Google и YouTube — форс через прокси ---
+google.com
+youtube.com
+youtu.be
+googleapis.com
+gstatic.com
+googleusercontent.com
+ytimg.com
+ggpht.com
+
+# --- Telegram — форс через прокси ---
+telegram.org
+t.me
+telesco.pe
+cdn-telegram.org
+
+# --- Заблокированное в РФ — форс через прокси ---
+twitter.com
+x.com
+facebook.com
+instagram.com
+wikipedia.org

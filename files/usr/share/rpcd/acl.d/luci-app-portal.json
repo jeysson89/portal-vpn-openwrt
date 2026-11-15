@@ -1,0 +1,22 @@
+{
+	"luci-app-portal": {
+		"description": "Portal VPN status and control",
+		"read": {
+			"file": {
+				"/etc/portal/portal-luci.sh": [ "exec", "read" ]
+			},
+			"ubus": {
+				"session": [ "access", "keepalive" ],
+				"luci": [ "getVersion", "getInitList" ]
+			}
+		},
+		"write": {
+			"file": {
+				"/etc/portal/portal-luci.sh": [ "exec" ]
+			},
+			"ubus": {
+				"luci": [ "setInitAction" ]
+			}
+		}
+	}
+}

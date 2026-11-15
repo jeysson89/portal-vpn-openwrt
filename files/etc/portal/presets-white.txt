@@ -1,0 +1,66 @@
+#Банки и госуслуги
+gosuslugi.ru
+nalog.gov.ru
+mos.ru
+sberbank.ru
+sber.ru
+vtb.ru
+tinkoff.ru
+tbank.ru
+alfabank.ru
+raiffeisen.ru
+gazprombank.ru
+sovcombank.ru
+psbank.ru
+mkb.ru
+zenit.ru
+#Поиск и почта
+yandex.ru
+ya.ru
+yandex.net
+yastatic.net
+mail.ru
+list.ru
+bk.ru
+inbox.ru
+rambler.ru
+#Соцсети и мессенджеры
+vk.com
+vk.ru
+userapi.com
+vkuser.net
+ok.ru
+odnoklassniki.ru
+dnevnik.ru
+#Маркетплейсы и магазины
+ozon.ru
+wildberries.ru
+avito.ru
+dns-shop.ru
+citilink.ru
+mvideo.ru
+eldorado.ru
+magnit.ru
+perekrestok.ru
+vprok.ru
+samokat.ru
+#СМИ и ТВ
+rbc.ru
+rt.ru
+tass.ru
+ria.ru
+lenta.ru
+gazeta.ru
+kommersant.ru
+kp.ru
+mk.ru
+iz.ru
+1tv.ru
+ntv.ru
+smotrim.ru
+rutube.ru
+#Видео и музыка
+kinopoisk.ru
+ivi.ru
+okko.tv
+zvuk.com

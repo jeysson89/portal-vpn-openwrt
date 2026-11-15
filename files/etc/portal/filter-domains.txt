@@ -1,0 +1,82 @@
+# Фильтрация трафика: домены и все их поддомены идут НАПРЯМУЮ (мимо VPN).
+# Один домен на строку. Всё остальное — через Opera VPN.
+# --- зоны ---
+ru
+su
+xn--p1ai
+# --- банки / госуслуги ---
+gosuslugi.ru
+nalog.gov.ru
+mos.ru
+sberbank.ru
+sber.ru
+vtb.ru
+tinkoff.ru
+tbank.ru
+alfabank.ru
+raiffeisen.ru
+gazprombank.ru
+# --- почта / поиск / соцсети ---
+mail.ru
+yandex.ru
+ya.ru
+vk.com
+ok.ru
+# --- магазины / СМИ ---
+avito.ru
+wildberries.ru
+ozon.ru
+mvideo.ru
+dns-shop.ru
+citilink.ru
+lenta.ru
+rbc.ru
+rt.ru
+mgts.ru
+
+# --- Банки и госуслуги ---
+sovcombank.ru
+psbank.ru
+mkb.ru
+zenit.ru
+
+# --- Поиск и почта ---
+yandex.net
+yastatic.net
+list.ru
+bk.ru
+inbox.ru
+rambler.ru
+
+# --- Соцсети и мессенджеры ---
+vk.ru
+userapi.com
+vkuser.net
+odnoklassniki.ru
+dnevnik.ru
+
+# --- Маркетплейсы и магазины ---
+eldorado.ru
+magnit.ru
+perekrestok.ru
+vprok.ru
+samokat.ru
+
+# --- СМИ и ТВ ---
+tass.ru
+ria.ru
+gazeta.ru
+kommersant.ru
+kp.ru
+mk.ru
+iz.ru
+1tv.ru
+ntv.ru
+smotrim.ru
+rutube.ru
+
+# --- Видео и музыка ---
+kinopoisk.ru
+ivi.ru
+okko.tv
+zvuk.com

@@ -1,0 +1,12 @@
+* text=auto eol=lf
+*.sh text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+*.uc text eol=lf
+Makefile text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.apk binary
+*.ipk binary
+opera-proxy binary

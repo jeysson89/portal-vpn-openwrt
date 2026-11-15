@@ -1,0 +1,17 @@
+#!/bin/sh /etc/rc.common
+START=99
+STOP=10
+USE_PROCD=1
+
+# Fast traffic sampler for portal-tun (5 s samples, /tmp/portal-traffic-fast.log).
+# No custom stop_service: "service_stop /bin/sh" would kill ALL busybox shells.
+# procd kills the faststats instance via procd_kill in stop() itself.
+
+start_service() {
+  procd_open_instance faststats
+  procd_set_param command /bin/sh /etc/portal/fast-stats-loop.sh
+  procd_set_param respawn 3600 5 5
+  procd_set_param stdout 0
+  procd_set_param stderr 0
+  procd_close_instance
+}

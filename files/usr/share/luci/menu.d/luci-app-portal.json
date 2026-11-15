@@ -1,0 +1,26 @@
+{
+	"admin/services/portal": {
+		"title": "Portal VPN",
+		"order": 50,
+		"action": { "type": "firstchild" },
+		"depends": { "acl": [ "luci-app-portal" ] }
+	},
+	"admin/services/portal/control": {
+		"title": "Статус",
+		"order": 1,
+		"action": { "type": "view", "path": "portal/control" },
+		"depends": { "acl": [ "luci-app-portal" ] }
+	},
+	"admin/services/portal/routing": {
+		"title": "Маршрутизация",
+		"order": 2,
+		"action": { "type": "view", "path": "portal/routing" },
+		"depends": { "acl": [ "luci-app-portal" ] }
+	},
+	"admin/services/portal/settings": {
+		"title": "Настройки",
+		"order": 3,
+		"action": { "type": "view", "path": "portal/settings" },
+		"depends": { "acl": [ "luci-app-portal" ] }
+	}
+}
