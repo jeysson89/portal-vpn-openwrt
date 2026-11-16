@@ -69,6 +69,28 @@ ssh root@192.168.1.1 'apk add --allow-untrusted /tmp/luci-app-portal-*.apk'
 сервисы уже добавлены в `/etc/rc.d`, но движок стартует только после
 «Запустить» или перезагрузки).
 
+### Обновление
+
+Файлы из `conffiles` (списки фильтров, `relay.conf`, `country.conf`,
+`dev-*.txt`, `net.conf`) при обновлении **не перезаписываются**.
+
+- **24.10 (opkg)** спросит, что делать с изменённым конфигом; при
+  неинтерактивной установке сохранит ваш вариант и положит новый рядом как
+  `*.opkg-new`.
+- **25.12 (apk 3.x)** всегда сохраняет ваш файл, а версию из пакета кладёт
+  рядом с суффиксом `*.apk-new` (например, `poolboot.sh.apk-new`,
+  `relay.conf.apk-new`). Это нормально: посмотреть различия и принять новое
+  значение можно вручную:
+
+```sh
+diff /etc/portal/relay.conf /etc/portal/relay.conf.apk-new
+mv /etc/portal/relay.conf.apk-new /etc/portal/relay.conf   # принять новое
+rm /etc/portal/*.apk-new                                   # или оставить своё
+```
+
+Скрипты без conffile-статуса (`portal-env.sh`, `tun-policy.sh`,
+`portal-watch.sh`, `portal-luci.sh`) обновляются всегда.
+
 ### Что делает postinst
 
 - включает `sing-box` в UCI (`/etc/sing-box/config.json`);
