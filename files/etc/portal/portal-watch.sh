@@ -6,6 +6,8 @@
 #     sweep alive relays from pool, switch, restart, verify; up to 3 attempts
 #  4. guards sing-box/tun/policy/firewall chain
 CD=/etc/portal
+# LAN/WAN detection (never hardcode br-lan / 192.168.x)
+. $CD/portal-env.sh
 # manual pause: engine stopped on purpose from LuCI — watchdog must not revive it
 [ -f $CD/engine-paused ] && exit 0
 # autostart off + no manual-start marker (/tmp dies on reboot): stay off after boot
@@ -38,7 +40,7 @@ engine_pids() {
 # route: after a sing-box restart the rule survives but the route does not
 policy_broken() {
   ip link show portal-tun >/dev/null 2>&1 || return 1
-  ip rule 2>/dev/null | grep -q 'iif br-lan' || return 0
+  ip rule 2>/dev/null | grep -q "iif $LAN_IF" || return 0
   ip route show table 100 2>/dev/null | grep -q '^default dev portal-tun' || return 0
   return 1
 }

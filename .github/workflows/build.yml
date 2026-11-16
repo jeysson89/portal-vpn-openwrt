@@ -46,15 +46,24 @@ jobs:
             exit 1
           fi
           echo "SDK: $file"
-          curl -fsSL -o sdk.tar.zst "$base$file"
-          tar --zstd -xf sdk.tar.zst
-          echo "SDK_DIR=${file%.tar.zst}" >> "$GITHUB_ENV"
+          # keep the SDK OUTSIDE the checkout: rsync of ./ below must never see it
+          mkdir -p "$RUNNER_TEMP/sdk"
+          curl -fsSL -o "$RUNNER_TEMP/sdk.tar.zst" "$base$file"
+          tar --zstd -xf "$RUNNER_TEMP/sdk.tar.zst" -C "$RUNNER_TEMP"
+          echo "SDK_DIR=$RUNNER_TEMP/${file%.tar.zst}" >> "$GITHUB_ENV"
+
+      - name: Update feeds (luci-base, curl, ca-bundle come from feeds)
+        run: |
+          set -euo pipefail
+          cd "$SDK_DIR"
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
 
       - name: Add package to SDK
         run: |
           set -euo pipefail
           mkdir -p "$SDK_DIR/package/portal-vpn"
-          rsync -a --exclude '.git' --exclude '.github' ./ "$SDK_DIR/package/portal-vpn/"
+          rsync -a --exclude '.git' --exclude '.github' --exclude 'openwrt-sdk-*' ./ "$SDK_DIR/package/portal-vpn/"
           # make sure shell scripts keep LF inside the package
           find "$SDK_DIR/package/portal-vpn" -name '*.sh' -exec sed -i 's/\r$//' {} +
 

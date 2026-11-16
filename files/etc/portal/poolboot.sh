@@ -1,9 +1,19 @@
 #!/bin/sh
-# Bootstrap: fetch fresh relay pool without working tunnel
+# Bootstrap: fetch a fresh relay pool while the tunnel is down (so the pool
+# cannot be resolved through the tunnel itself).
+# The resolver must be reachable WITHOUT the tunnel: portal-env.sh gives the
+# provider DNS / gateway instead of a hardcoded 192.168.10.1.
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
-BS=192.168.10.1
-ip_jsd=$(nslookup cdn.jsdelivr.net $BS 2>/dev/null | awk '/^Address/{print $2}' | grep -v "$BS" | head -1)
-echo "jsdelivr IP: $ip_jsd"
+. /etc/portal/portal-env.sh
+
+ip_jsd=""
+BS=""
+for s in $WAN_DNS $WAN_GW 1.1.1.1; do
+  ip_jsd=$(nslookup cdn.jsdelivr.net "$s" 2>/dev/null | awk '/^Address/{print $2}' \
+    | grep -E '^([0-9]{1,3}\.){3}[0-9]{1,3}$' | grep -v "^$s$" | head -1)
+  [ -n "$ip_jsd" ] && { BS=$s; break; }
+done
+echo "jsdelivr IP: $ip_jsd (resolver: ${BS:-none})"
 [ -n "$ip_jsd" ] || { echo "NO_DNS"; exit 1; }
 mkdir -p /tmp/poolfetch
 curl -sS --max-time 20 --resolve "cdn.jsdelivr.net:443:$ip_jsd" -o /tmp/poolfetch/http.txt "https://cdn.jsdelivr.net/gh/proxifly/free-proxy-list@main/proxies/protocols/http/data.txt" 2>/dev/null

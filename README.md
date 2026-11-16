@@ -106,6 +106,14 @@ apk del luci-app-portal         # 25.12
 | `presets-white.txt`, `presets-black.txt` | готовые наборы для вкладки «Маршрутизация» |
 | `relay-seeds.txt` | стартовый список релеев для поиска |
 | `config-template.json` | шаблон `/etc/sing-box/config.json` |
+| `net.conf` | переопределение автоопределения сети (по умолчанию всё закомментировано) |
+
+LAN/WAN определяются автоматически (`/etc/portal/portal-env.sh`): устройство LAN
+из UCI `network.lan.device` (fallback — первый бридж с IPv4), его сеть и IPv6-
+префиксы из ядра, WAN и шлюз — из default-маршрута main, DNS провайдера — из
+`/tmp/resolv.conf.d/resolv.conf.auto`. Если схема нестандартная, задайте
+`LAN_IF`, `LAN_NET`, `WAN_IF`, `WAN_GW`, `WAN_DNS` в `net.conf`.
+Проверить, что определилось: `/etc/portal/portal-env.sh show`.
 
 `relay.conf`, `country.conf`, списки и `dev-*.txt` объявлены как `conffiles` —
 при обновлении пакета ваши правки сохраняются.
@@ -184,10 +192,10 @@ ls bin/packages/*/base/luci-app-portal-*.ipk
 
 ## Ограничения и предостережения
 
-- **Сеть LAN/WAN пока зашита**: `tun-policy.sh` использует `br-lan`,
-  `192.168.200.0/24`, шлюз `192.168.10.1` и nft-сеть `192.168.200.0/24`;
-  `poolboot.sh` — DNS `192.168.10.1`; watchdog проверяет `iif br-lan`.
-  Для другой адресации поправьте эти значения (автоопределение планируется).
+- **Сеть определяется автоматически**, но `net.conf` пока не покрывает
+  нестандартные схемы целиком: `tun-policy.sh` строит правила по LAN/WAN из
+  `portal-env.sh`, а если LAN-адрес не определился (нет IPv4 на LAN), политика
+  не применяется и пишет в лог `LAN interface not detected`.
 - **Не запускайте вместе с другими VPN на table 100.** Например
   `cybportal` (xray/tproxy) пишет `local default dev lo table 100` и
   переводит dnsmasq на `127.0.0.1#5353` — правила и DNS конфликтуют.

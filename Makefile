@@ -41,6 +41,7 @@ define Package/$(PKG_NAME)/conffiles
 /etc/portal/dev-full.txt
 /etc/portal/dev-proxy.txt
 /etc/portal/dev-direct.txt
+/etc/portal/net.conf
 endef
 
 define Build/Compile
@@ -63,6 +64,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./files/etc/portal/portal-stats.sh $(1)/etc/portal/portal-stats.sh
 	$(INSTALL_BIN) ./files/etc/portal/fast-stats-loop.sh $(1)/etc/portal/fast-stats-loop.sh
 	$(INSTALL_BIN) ./files/etc/portal/portaltun-start.sh $(1)/etc/portal/portaltun-start.sh
+	$(INSTALL_BIN) ./files/etc/portal/portal-env.sh $(1)/etc/portal/portal-env.sh
 	$(INSTALL_BIN) ./files/etc/portal/opera-proxy $(1)/etc/portal/opera-proxy
 
 	$(INSTALL_DATA) ./files/etc/portal/config-template.json $(1)/etc/portal/config-template.json
@@ -77,6 +79,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DATA) ./files/etc/portal/dev-full.txt $(1)/etc/portal/dev-full.txt
 	$(INSTALL_DATA) ./files/etc/portal/dev-proxy.txt $(1)/etc/portal/dev-proxy.txt
 	$(INSTALL_DATA) ./files/etc/portal/dev-direct.txt $(1)/etc/portal/dev-direct.txt
+	$(INSTALL_DATA) ./files/etc/portal/net.conf $(1)/etc/portal/net.conf
 
 	$(INSTALL_DIR) $(1)/usr/share/luci/menu.d
 	$(INSTALL_DATA) ./files/usr/share/luci/menu.d/luci-app-portal.json \
