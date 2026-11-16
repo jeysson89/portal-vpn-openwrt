@@ -7,7 +7,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-portal
-PKG_VERSION:=0.1.0
+PKG_VERSION:=0.1.1
 PKG_RELEASE:=1
 
 PKG_LICENSE:=MIT
@@ -122,6 +122,24 @@ if [ "$$(uci -q get dhcp.@dnsmasq[0].noresolv)" != "1" ]; then
 	uci -q commit dhcp
 	/etc/init.d/dnsmasq restart >/dev/null 2>&1
 fi
+
+# --- apk 3.x protects every file under /etc, not only conffiles: on upgrade
+# the new engine scripts and the opera-proxy binary are unpacked as
+# <name>.apk-new and the OLD code keeps running. Adopt code unconditionally;
+# user data (lists, relay.conf, net.conf) stays as .apk-new for manual review. ---
+for f in portal-env.sh tun-policy.sh portal-watch.sh portal-luci.sh \
+         poolboot.sh speedsel.sh sweep.sh filter-gen.sh portal-stats.sh \
+         fast-stats-loop.sh portaltun-start.sh opera-proxy \
+         config-template.json; do
+	if [ -f /etc/portal/$$f.apk-new ]; then
+		mv -f /etc/portal/$$f.apk-new /etc/portal/$$f
+	fi
+done
+for f in /etc/init.d/portal /etc/init.d/portalstats /etc/init.d/portaltun; do
+	if [ -f "$$f.apk-new" ]; then
+		mv -f "$$f.apk-new" "$$f"
+	fi
+done
 
 # --- leftovers of a manual (pre-package) install: numbered view files ---
 rm -f /www/luci-static/resources/view/portal/control[0-9]*.js \

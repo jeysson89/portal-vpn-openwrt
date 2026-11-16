@@ -52,11 +52,11 @@ sing-box). Трафик самого роутера (SSH, LuCI, обновлен
 
 ```sh
 # OpenWrt 24.10 (.ipk)
-scp luci-app-portal_0.1.0-1_aarch64_cortex-a53.ipk root@192.168.1.1:/tmp/
+scp luci-app-portal_0.1.1-r1_aarch64_cortex-a53.ipk root@192.168.1.1:/tmp/
 ssh root@192.168.1.1 'opkg install /tmp/luci-app-portal_*.ipk'
 
 # OpenWrt 25.12 (.apk)
-scp luci-app-portal-0.1.0-r1.apk root@192.168.1.1:/tmp/
+scp luci-app-portal-0.1.1-r1.apk root@192.168.1.1:/tmp/
 ssh root@192.168.1.1 'apk add --allow-untrusted /tmp/luci-app-portal-*.apk'
 ```
 
@@ -71,25 +71,26 @@ ssh root@192.168.1.1 'apk add --allow-untrusted /tmp/luci-app-portal-*.apk'
 
 ### Обновление
 
-Файлы из `conffiles` (списки фильтров, `relay.conf`, `country.conf`,
-`dev-*.txt`, `net.conf`) при обновлении **не перезаписываются**.
+- **24.10 (opkg)** перезаписывает всё, кроме `conffiles`; для изменённого
+  конфига спросит, что делать (при неинтерактивной установке сохранит ваш
+  вариант и положит новый рядом как `*.opkg-new`).
+- **25.12 (apk 3.x)** защищает **весь** `/etc`, а не только conffiles: версия
+  из пакета кладётся рядом с суффиксом `*.apk-new`, а старый файл продолжает
+  работать. Поэтому после `apk add` в `/etc/portal/` можно увидеть
+  `poolboot.sh.apk-new`, `opera-proxy.apk-new` и т.п. — это нормально.
 
-- **24.10 (opkg)** спросит, что делать с изменённым конфигом; при
-  неинтерактивной установке сохранит ваш вариант и положит новый рядом как
-  `*.opkg-new`.
-- **25.12 (apk 3.x)** всегда сохраняет ваш файл, а версию из пакета кладёт
-  рядом с суффиксом `*.apk-new` (например, `poolboot.sh.apk-new`,
-  `relay.conf.apk-new`). Это нормально: посмотреть различия и принять новое
-  значение можно вручную:
+Начиная с 0.1.1 `postinst` сам принимает **код** из `*.apk-new`
+(`portal-env.sh`, `tun-policy.sh`, `portal-watch.sh`, `opera-proxy`,
+`/etc/init.d/portal*` и остальные скрипты), иначе после обновления на 25.12
+продолжал бы работать старый движок. **Данные** (`relay.conf`,
+`country.conf`, `dev-*.txt`, `filter-*.txt`, `net.conf`) не трогаются —
+их нужно сравнить и принять вручную:
 
 ```sh
 diff /etc/portal/relay.conf /etc/portal/relay.conf.apk-new
 mv /etc/portal/relay.conf.apk-new /etc/portal/relay.conf   # принять новое
 rm /etc/portal/*.apk-new                                   # или оставить своё
 ```
-
-Скрипты без conffile-статуса (`portal-env.sh`, `tun-policy.sh`,
-`portal-watch.sh`, `portal-luci.sh`) обновляются всегда.
 
 ### Что делает postinst
 
@@ -209,7 +210,7 @@ ls bin/packages/*/base/luci-app-portal-*.ipk
 `scripts/deploy.sh` копирует готовый пакет на роутер и ставит его:
 
 ```sh
-./scripts/deploy.sh luci-app-portal_0.1.0-1_aarch64_cortex-a53.ipk root@192.168.1.1
+./scripts/deploy.sh luci-app-portal_0.1.1-r1_aarch64_cortex-a53.ipk root@192.168.1.1
 ```
 
 ## Ограничения и предостережения

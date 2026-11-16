@@ -1,8 +1,8 @@
 #!/bin/sh
 # Copy a built package to the router and install it.
 #
-#   ./scripts/deploy.sh luci-app-portal_0.1.0-1_aarch64_cortex-a53.ipk [root@192.168.1.1]
-#   ./scripts/deploy.sh luci-app-portal-0.1.0-r1.apk root@192.168.1.1
+#   ./scripts/deploy.sh luci-app-portal_0.1.1-r1_aarch64_cortex-a53.ipk [root@192.168.1.1]
+#   ./scripts/deploy.sh luci-app-portal-0.1.1-r1.apk root@192.168.1.1
 #
 # The format is detected from the file extension (ipk -> opkg, apk -> apk add).
 set -eu
