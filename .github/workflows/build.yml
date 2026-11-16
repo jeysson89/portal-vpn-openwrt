@@ -81,7 +81,8 @@ jobs:
           find "$SDK_DIR/bin/packages" -type f -name "*luci-app-portal*.${{ matrix.fmt }}" -exec cp -v {} out/ \;
           test -n "$(ls -A out)"
           ls -l out
-          ( cd out && sha256sum * > SHA256SUMS )
+          # per-format checksum file: two jobs must not upload the same asset name
+          ( cd out && sha256sum * > "SHA256SUMS.${{ matrix.fmt }}" )
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -101,10 +102,15 @@ jobs:
         with:
           path: artifacts
 
+      - name: Combine checksums
+        run: cat artifacts/*/SHA256SUMS.* > SHA256SUMS && cat SHA256SUMS
+
       - name: Publish
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/**/*
+          files: |
+            artifacts/**/*
+            SHA256SUMS
           generate_release_notes: true
           body: |
             OpenWrt packages for **mediatek/filogic (aarch64_cortex-a53)**:
